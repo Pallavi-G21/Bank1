@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Bank Details</title>
+  <style>
+  table, th, td {
+    border: 1px solid;
+    border-spacing: 0px;
+    margin-top: 5px
+
+  } 
+  div, h3 {
+    width:50%; 
+    margin:auto;
+    border: 1px;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+   
+    <h3>Bank Branches</h3>
+    <div class="container ">
+     
+        <input type="text" placeholder="Search.." name="query" id="query">
+        <button type="submit" id="my-search"><i class="fa fa-search">Search</i></button>
+        
+  <table>
+  <thead>
+    <tr>
+      <th scope="col-2">ifsc</th>
+      <th scope="col-2">bank_name</th>
+      <th scope="col-2">bank_id</th>
+      <th scope="col-2">branch</th>
+      <th scope="col-2">address</th>
+      <th scope="col-2">city</th>
+      <th scope="col-2">district</th>
+      <th scope="col-2">state</th>
+      
+    </tr>
+  </thead>
+   {% block data %} {% endblock %}
+  
+</table>
+</div>
+<div>
+  <span>
+    {% block page %} {% endblock %}
+  
+  </span>
+ </div>
+<script>
+  $('#my-search').click(function(){
+    search_data = $('#query').val();
+    $.ajax({
+        url: '/api/search_ifsc/',
+        data: {
+          'ifsc': search_data
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $('#filtered_data').html('');
+              var i;
+              var table_data = "";
+              for (i = 0; i < data.length; i++) {
+                    var i_data = '<tr><td>'+data[i].ifsc+'</td><td>'+data[i].bank_name+'</td><td>'+data[i].bank_id+'</td><td>'+data[i].branch+'</td><td>'+data[i].address+'</td><td>'+data[i].city+'</td><td>'+data[i].district+'</td><td>'+data[i].state+'</td></tr>';
+                   table_data = table_data + i_data;
+              }
+              $('#filtered_data').html(table_data);
+              $('.btn_class_next_previous').css("display", 'none');
+              console.log(table_data);
+        }
+      });
+  });
+</script>
+</body>
+</html>
