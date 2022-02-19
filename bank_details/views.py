@@ -83,3 +83,5 @@ def get_data(request, page=1):
 	if city_list is not None and len(city_list) > 0:
 		context['alldata_for_city'] = set(city_list)
 	return render(request,'bank_details/detail.html',context)
+	# end
+	
